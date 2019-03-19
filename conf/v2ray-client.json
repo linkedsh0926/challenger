@@ -1,0 +1,125 @@
+{
+  "binaryPath": "/opt/challenger/bin/v2ray",
+  "settings": {
+    "routing": {
+      "domainStrategy": "AsIs",
+      "rules": [
+        {
+          "type": "field",
+          "network": "tcp",
+          "inboundTag": [
+            "sohu-inc-network"
+          ],
+          "outboundTag": "sohu-inc-outbound"
+        }
+      ]
+    },
+    "inbounds": [
+      {
+        "protocol": "socks",
+        "port": 21080,
+        "listen": "0.0.0.0",
+        "settings": {
+          "udp": true,
+          "auth": "noauth"
+        }
+      },
+      {
+        "protocol": "dokodemo-door",
+        "port": 3333,
+        "settings": {
+          "network": "tcp,udp",
+          "followRedirect": true
+        },
+        "sniffing": {
+          "enabled": true,
+          "destOverride": [
+            "http",
+            "tls"
+          ]
+        }
+      },
+      {
+        "protocol": "dokodemo-door",
+        "port": 3334,
+        "tag": "sohu-inc-network",
+        "settings": {
+          "network": "tcp,udp",
+          "followRedirect": true
+        },
+        "sniffing": {
+          "enabled": true,
+          "destOverride": [
+            "http",
+            "tls"
+          ]
+        }
+      }
+    ],
+    "outbounds": [
+      {
+        "protocol": "vmess",
+        "settings": {
+          "vnext": [
+            {
+              "users": [
+                {
+                  "alterId": 64,
+                  "id": "755274d9-ee1d-4651-a63a-f2401a8e89c1"
+                }
+              ],
+              "port": 13174,
+              "address": "74.120.171.99"
+            }
+          ]
+        },
+        "streamSettings": {
+          "sockopt": {
+            "mark": 255
+          },
+          "network": "kcp",
+          "kcpSettings": {
+            "mtu": 1350,
+            "tti": 20,
+            "uplinkCapacity": 50,
+            "downlinkCapacity": 50,
+            "congestion": false,
+            "readBufferSize": 1,
+            "writeBufferSize": 1,
+            "header": {
+              "type": "wechat-video"
+            }
+          }
+        }
+      },
+      {
+        "protocol": "vmess",
+        "tag": "sohu-inc-outbound",
+        "settings": {
+          "vnext": [
+            {
+              "address": "218.60.6.140",
+              "port": 443,
+              "users": [
+                {
+                  "id": "96e24c25-f557-42d0-bd71-2ea0d23a4ddc",
+                  "alterId": 64
+                }
+              ]
+            }
+          ]
+        },
+        "streamSettings": {
+          "sockopt": {
+            "mark": 255
+          }
+        }
+      }
+    ],
+    "log": {
+      "loglevel": "debug",
+      "access": "/var/log/v2ray-access.log",
+      "error": "/var/log/v2ray-error.log"
+    }
+  }
+}

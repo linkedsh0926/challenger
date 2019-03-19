@@ -1,0 +1,59 @@
+{
+    "customRules": {
+        "whiteList": [
+            "apple.com",
+            "microsoft.com",
+            "tencentyun.com"
+        ],
+        "blackList": [
+            "google.com.hk",
+            "google.co.jp",
+            "google.com.tw"
+        ],
+        "others": [
+            {
+                "type": "address",
+                "domain": "sso.sohu-inc.com",
+                "address": "10.2.176.16"
+            },
+            {
+                "type": "address",
+                "domain": "myfamily.sohu-inc.com",
+                "address": "10.2.176.19"
+            },
+            {
+                "type": "address",
+                "domain": "mirrors.tencentyun.com",
+                "address": "10.53.220.20"
+            }
+        ]
+    },
+    "dns2socks": {
+        "binaryPath": "/opt/challenger/bin/dns2socks",
+        "logPath": "/opt/challenger/logs/dns2socks.log",
+        "listenIP": "127.0.0.1",
+        "listenPort": 21053,
+        "upStreamSocksAddr": "127.0.0.1",
+        "upStreamSocksPort": 21080
+    },
+    "chinaDNS": {
+        "binaryPath": "/opt/challenger/bin/chinadns",
+        "logPath": "/opt/challenger/logs/chinadns.log",
+        "listenIP": "127.0.0.1",
+        "listenPort": 20053
+    },
+    "dnsmasq": {
+        "binaryPath": "/opt/challenger/bin/dnsmasq",
+        "logPath": "/opt/challenger/logs/dnsmasq.log",
+        "listenIP": "127.0.0.1,10.163.54.158",
+        "listenPort": 53,
+        "pidFile": "/var/run/dnsmasq.pid",
+        "underUser": "nobody",
+        "bindDynamic": true,
+        "noPoll": true,
+        "noResolv": true,
+        "noNegcache": true,
+        "cacheSize": 10000,
+        "minPort": 4096
+    }
+}

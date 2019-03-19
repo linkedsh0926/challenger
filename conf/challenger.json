@@ -1,0 +1,11 @@
+{
+    "ispDNSAddr": "119.29.29.29",
+    "ispDNSPort": 53,
+    "overseasDNSAddr": "8.8.8.8",
+    "overseasDNSPort": 53,
+    "gfwlistDownloadUrl": "https://raw.githubusercontent.com/gfwlist/gfwlist/master/gfwlist.txt",
+    "gfwlistPath": "/opt/challenger/conf/gfwlist.txt",
+    "chnRouteList": "/opt/challenger/conf/chnroute.txt",
+    "strategy": "gfwlist",
+    "upStreamAddr": "74.120.171.99"
+}

@@ -1,0 +1,211 @@
+{
+    "ipsetList": [
+        {
+            "name": "sohuNetwork",
+            "type": "nethash",
+            "rules": [
+                "10.0.0.0/10",
+                "10.64.0.0/10"
+            ]
+        },
+        {
+            "name": "blackList",
+            "type": "nethash",
+            "rules": [
+                "67.198.55.0/24",
+                "91.108.4.0/22",
+                "91.108.8.0/22",
+                "91.108.12.0/22",
+                "91.108.56.0/22",
+                "93.119.240.0/24",
+                "93.119.241.0/24",
+                "93.119.242.0/24",
+                "93.119.243.0/24",
+                "93.119.244.0/24",
+                "93.119.245.0/24",
+                "93.119.246.0/24",
+                "93.119.247.0/24",
+                "93.119.248.0/24",
+                "93.119.249.0/24",
+                "93.119.250.0/24",
+                "93.119.251.0/24",
+                "93.119.252.0/24",
+                "93.119.253.0/24",
+                "93.119.254.0/24",
+                "93.119.255.0/24",
+                "109.239.140.0/24",
+                "149.154.160.0/22",
+                "149.154.164.0/22",
+                "149.154.172.0/22"
+            ]
+        },
+        {
+            "name": "whiteList",
+            "type": "nethash",
+            "rules": [
+                "0.0.0.0/8",
+                "10.0.0.0/8",
+                "100.64.0.0/10",
+                "127.0.0.0/8",
+                "169.254.0.0/16",
+                "172.16.0.0/12",
+                "192.168.0.0/16",
+                "224.0.0.0/4",
+                "240.0.0.0/4",
+                "223.5.5.5",
+                "223.6.6.6",
+                "114.114.114.114",
+                "114.114.115.115",
+                "1.2.4.8",
+                "210.2.4.8",
+                "117.50.11.11",
+                "117.50.22.22",
+                "180.76.76.76",
+                "119.29.29.29"
+            ]
+        },
+        {
+            "name": "ispNetwork",
+            "type": "nethash",
+            "rules": []
+        },
+        {
+            "name": "overseasNetwork",
+            "type": "nethash",
+            "rules": []
+        }
+    ],
+    "iptables": {
+        "natStrategy": {
+            "gfwlist": "CHALLENGER_GFW",
+            "chnroute": "CHALLENGER_CHN",
+            "global": "CHALLENGER_GLO"
+        },
+        "chains": [
+            {
+                "name": "CHALLENGER",
+                "table": "nat",
+                "rules": [
+                    {
+                        "protocol": "tcp",
+                        "module": "set",
+                        "moduleParams": {
+                            "--match-set": [
+                                "sohuNetwork",
+                                "dst"
+                            ]
+                        },
+                        "action": "REDIRECT",
+                        "actionParams": {
+                            "--to-ports": 3334
+                        }
+                    },
+                    {
+                        "protocol": "all",
+                        "module": "set",
+                        "moduleParams": {
+                            "--match-set": [
+                                "whiteList",
+                                "dst"
+                            ]
+                        },
+                        "action": "RETURN",
+                        "actionParams": {}
+                    },
+                    {
+                        "protocol": "tcp",
+                        "module": "mark",
+                        "moduleParams": {
+                            "--mark": [
+                                "0xff"
+                            ]
+                        },
+                        "action": "RETURN",
+                        "actionParams": {}
+                    }
+                ]
+            },
+            {
+                "name": "CHALLENGER_GFW",
+                "table": "nat",
+                "rules": [
+                    {
+                        "protocol": "tcp",
+                        "module": "set",
+                        "moduleParams": {
+                            "--match-set": [
+                                "blackList",
+                                "dst"
+                            ]
+                        },
+                        "action": "REDIRECT",
+                        "actionParams": {
+                            "--to-ports": 3333
+                        }
+                    },
+                    {
+                        "protocol": "tcp",
+                        "module": "set",
+                        "moduleParams": {
+                            "--match-set": [
+                                "overseasNetwork",
+                                "dst"
+                            ]
+                        },
+                        "action": "REDIRECT",
+                        "actionParams": {
+                            "--to-ports": 3333
+                        }
+                    }
+                ]
+            },
+            {
+                "name": "CHALLENGER_CHN",
+                "table": "nat",
+                "rules": [
+                    {
+                        "protocol": "tcp",
+                        "module": "set",
+                        "moduleParams": {
+                            "--match-set": [
+                                "blackList",
+                                "dst"
+                            ]
+                        },
+                        "action": "REDIRECT",
+                        "actionParams": {
+                            "--to-ports": 3333
+                        }
+                    },
+                    {
+                        "protocol": "tcp",
+                        "module": "set",
+                        "moduleParams": {
+                            "! --match-set": [
+                                "ispNetwork",
+                                "dst"
+                            ]
+                        },
+                        "action": "REDIRECT",
+                        "actionParams": {
+                            "--to-ports": 3333
+                        }
+                    }
+                ]
+            },
+            {
+                "name": "CHALLENGER_GLO",
+                "table": "nat",
+                "rules": [
+                    {
+                        "protocol": "tcp",
+                        "action": "REDIRECT",
+                        "actionParams": {
+                            "--to-ports": 3333
+                        }
+                    }
+                ]
+            }
+        ]
+    }
+}
