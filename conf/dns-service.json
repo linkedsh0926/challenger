@@ -3,30 +3,16 @@
         "whiteList": [
             "apple.com",
             "microsoft.com",
-            "tencentyun.com"
+            "tencentyun.com",
+            "live.com",
+            "msedge.net"
         ],
         "blackList": [
             "google.com.hk",
             "google.co.jp",
             "google.com.tw"
         ],
-        "others": [
-            {
-                "type": "address",
-                "domain": "sso.sohu-inc.com",
-                "address": "10.2.176.16"
-            },
-            {
-                "type": "address",
-                "domain": "myfamily.sohu-inc.com",
-                "address": "10.2.176.19"
-            },
-            {
-                "type": "address",
-                "domain": "mirrors.tencentyun.com",
-                "address": "10.53.220.20"
-            }
-        ]
+        "others": []
     },
     "dns2socks": {
         "binaryPath": "/opt/challenger/bin/dns2socks",

@@ -369,6 +369,8 @@ class Challenger(object):
                     self.overseasDNSAddr = dnsConfDict["dns2socks"]["listenIP"]
                     self.overseasDNSPort = dnsConfDict["dns2socks"]["listenPort"]
 
+                    self.resolvStrategy = challengerConfDict["strategy"]
+
                 def start(self):
                     logging.info(
                         "Starting ChinaDNS daemon process, logging to %s" % self.logOutputPath)
@@ -382,9 +384,11 @@ class Challenger(object):
                             self.ispDNSAddr,
                             self.overseasDNSAddr, self.overseasDNSPort
                         ),
-                        "-d",
                         "-v"
                     ]
+                    if self.resolvStrategy == "gfwlist":
+                        cmd += ["-d"]
+
                     self.child = subprocess.Popen(
                         cmd, stdout=logOutputPipe, stderr=logOutputPipe)
                     logging.info("Running %s ..." % print_list(cmd))
@@ -450,15 +454,16 @@ class Challenger(object):
             self.ipsetRuleDict["whiteList"].add_child(self.upStreamAddr)
 
             # 添加 chnroute 到 ispNetwork
-            logging.info(
-                "Adding China mainland routing table to whitelist ...")
-            for ipAddrMask in open(self.chnRoutePath, 'r'):
-                ipAddrMask = ipAddrMask.strip('\n')
-                ipAddrMaskRegexp = "((1[0-9][0-9]\.)|(2[0-4][0-9]\.)|(25[0-5]\.)|([1-9][0-9]\.)|([0-9]\.)){3}((1[0-9][0-9])|(2[0-4][0-9])|(25[0-5])|([1-9][0-9])|([0-9]))/(\w+)"
-                r = re.search(ipAddrMaskRegexp, ipAddrMask)
+            if self.natStrategy == "chnroute":
+                logging.info(
+                    "Adding China mainland routing table to whitelist ...")
+                for ipAddrMask in open(self.chnRoutePath, 'r'):
+                    ipAddrMask = ipAddrMask.strip('\n')
+                    ipAddrMaskRegexp = "((1[0-9][0-9]\.)|(2[0-4][0-9]\.)|(25[0-5]\.)|([1-9][0-9]\.)|([0-9]\.)){3}((1[0-9][0-9])|(2[0-4][0-9])|(25[0-5])|([1-9][0-9])|([0-9]))/(\w+)"
+                    r = re.search(ipAddrMaskRegexp, ipAddrMask)
 
-                if r and r.group(0) == ipAddrMask:
-                    self.ipsetRuleDict["ispNetwork"].add_child(ipAddrMask)
+                    if r and r.group(0) == ipAddrMask:
+                        self.ipsetRuleDict["ispNetwork"].add_child(ipAddrMask)
 
             # 初始化 iptables
             logging.info("Initializing iptables chains ...")

@@ -7,5 +7,5 @@
     "gfwlistPath": "/opt/challenger/conf/gfwlist.txt",
     "chnRouteList": "/opt/challenger/conf/chnroute.txt",
     "strategy": "gfwlist",
-    "upStreamAddr": "74.120.171.99"
+    "upStreamAddr": "100.100.100.100"
 }

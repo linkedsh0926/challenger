@@ -1,14 +1,6 @@
 {
     "ipsetList": [
         {
-            "name": "sohuNetwork",
-            "type": "nethash",
-            "rules": [
-                "10.0.0.0/10",
-                "10.64.0.0/10"
-            ]
-        },
-        {
             "name": "blackList",
             "type": "nethash",
             "rules": [
@@ -61,7 +53,9 @@
                 "117.50.11.11",
                 "117.50.22.22",
                 "180.76.76.76",
-                "119.29.29.29"
+                "119.29.29.29",
+                "35.241.84.106",
+                "74.120.171.99"
             ]
         },
         {
@@ -86,20 +80,6 @@
                 "name": "CHALLENGER",
                 "table": "nat",
                 "rules": [
-                    {
-                        "protocol": "tcp",
-                        "module": "set",
-                        "moduleParams": {
-                            "--match-set": [
-                                "sohuNetwork",
-                                "dst"
-                            ]
-                        },
-                        "action": "REDIRECT",
-                        "actionParams": {
-                            "--to-ports": 3334
-                        }
-                    },
                     {
                         "protocol": "all",
                         "module": "set",

@@ -1,19 +1,6 @@
 {
   "binaryPath": "/opt/challenger/bin/v2ray",
   "settings": {
-    "routing": {
-      "domainStrategy": "AsIs",
-      "rules": [
-        {
-          "type": "field",
-          "network": "tcp",
-          "inboundTag": [
-            "sohu-inc-network"
-          ],
-          "outboundTag": "sohu-inc-outbound"
-        }
-      ]
-    },
     "inbounds": [
       {
         "protocol": "socks",
@@ -38,22 +25,6 @@
             "tls"
           ]
         }
-      },
-      {
-        "protocol": "dokodemo-door",
-        "port": 3334,
-        "tag": "sohu-inc-network",
-        "settings": {
-          "network": "tcp,udp",
-          "followRedirect": true
-        },
-        "sniffing": {
-          "enabled": true,
-          "destOverride": [
-            "http",
-            "tls"
-          ]
-        }
       }
     ],
     "outbounds": [
@@ -65,11 +36,11 @@
               "users": [
                 {
                   "alterId": 64,
-                  "id": "755274d9-ee1d-4651-a63a-f2401a8e89c1"
+                  "id": "879564ef-xxx"
                 }
               ],
-              "port": 13174,
-              "address": "74.120.171.99"
+              "port": 23456,
+              "address": "100.100.100.100"
             }
           ]
         },
@@ -89,29 +60,6 @@
             "header": {
               "type": "wechat-video"
             }
-          }
-        }
-      },
-      {
-        "protocol": "vmess",
-        "tag": "sohu-inc-outbound",
-        "settings": {
-          "vnext": [
-            {
-              "address": "218.60.6.140",
-              "port": 443,
-              "users": [
-                {
-                  "id": "96e24c25-f557-42d0-bd71-2ea0d23a4ddc",
-                  "alterId": 64
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "sockopt": {
-            "mark": 255
           }
         }
       }
